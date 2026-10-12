@@ -13,6 +13,17 @@ npm run preview   # náhled buildu
 npm run format    # Prettier
 ```
 
+## Nasazení (GitHub Pages)
+
+Web se nasazuje přes GitHub Actions (`.github/workflows/deploy.yml`): každý push do `main` spustí `npm ci`
+a `npm run build` a obsah `dist/` publikuje na Pages.
+
+Jednorázově je potřeba v repozitáři nastavit **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+Volba „Deploy from a branch“ nefunguje, protože by servírovala zdrojový `index.html` místo sestaveného webu.
+
+Cesty k assetům jsou relativní (`base: './'` ve `vite.config.ts`), takže web funguje v podsložce
+(`radekdobrovolny.github.io/nohy/`) i na vlastní doméně.
+
 ## Technologie
 
 - **Vite + React 19 + TypeScript**
