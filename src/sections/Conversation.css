@@ -1,0 +1,299 @@
+.convo__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 72px);
+  margin-bottom: clamp(48px, 7vw, 88px);
+}
+.convo__art {
+  max-width: 480px;
+  justify-self: center;
+  width: 100%;
+}
+
+/* ---------- kroky (sticky stack) ---------- */
+
+.steps {
+  display: grid;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.steps__card {
+  position: sticky;
+  top: calc(var(--nav-h) + 24px + var(--i) * 14px);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(20px, 3vw, 48px);
+  min-height: 260px;
+  padding: clamp(28px, 4vw, 48px);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  box-shadow: 0 -10px 30px -18px rgba(46, 42, 59, 0.35);
+  transform-origin: 50% 0%;
+  will-change: transform;
+}
+
+.steps__num {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 100;
+  font-size: clamp(3.4rem, 7vw, 6rem);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 0.9;
+  color: var(--coral-deep);
+  letter-spacing: -0.04em;
+}
+
+.steps__body h3 {
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  margin-bottom: 12px;
+}
+.steps__body p {
+  color: var(--ink-soft);
+}
+
+.steps__quote {
+  position: relative;
+  margin: 0;
+  padding: 22px 24px;
+  border: 2px solid var(--ink);
+  border-radius: 22px 22px 22px 6px;
+  background: var(--paper);
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 100;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  font-style: italic;
+  line-height: 1.4;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.steps__quote::before {
+  content: 'Třeba:';
+  position: absolute;
+  top: -13px;
+  left: 18px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 24px;
+  text-transform: uppercase;
+}
+
+/* ---------- co říct místo ---------- */
+
+.phrases {
+  margin-top: clamp(80px, 11vw, 144px);
+}
+.phrases__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 16px 40px;
+  margin-bottom: 32px;
+}
+.phrases__title {
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+}
+.phrases__head p {
+  color: var(--ink-soft);
+  max-width: 460px;
+}
+
+.phrases__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.phrases__grid li {
+  display: flex;
+}
+
+.phrase {
+  flex: 1;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  perspective: 1000px;
+  border-radius: 22px;
+}
+.phrase__inner {
+  display: grid;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s var(--ease-soft);
+}
+.phrase.is-flipped .phrase__inner {
+  transform: rotateY(180deg);
+}
+.phrase__face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 200px;
+  padding: 24px;
+  border: 2px solid var(--ink);
+  border-radius: 22px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.phrase__face--no {
+  background: var(--paper);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.phrase__face--yes {
+  background: var(--sage-deep);
+  color: var(--paper);
+  transform: rotateY(180deg);
+  box-shadow: -5px 5px 0 var(--ink);
+}
+.phrase__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.phrase__label svg {
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border-radius: 50%;
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.phrase__face--no .phrase__label {
+  color: var(--coral-deep);
+}
+.phrase__face--no .phrase__label svg {
+  background: var(--rose-soft);
+  stroke: var(--coral-deep);
+}
+.phrase__face--yes .phrase__label {
+  color: var(--butter);
+}
+.phrase__face--yes .phrase__label svg {
+  background: var(--butter);
+  stroke: var(--sage-deep);
+}
+.phrase__text {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 100;
+  font-size: 1.32rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.phrase__face--no .phrase__text {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: rgba(184, 71, 45, 0.55);
+  text-decoration-thickness: 2px;
+}
+.phrase__hint {
+  margin-top: auto;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--sage-deep);
+}
+.phrase__hint::after {
+  content: ' ↻';
+}
+.phrase:hover .phrase__face--no {
+  background: var(--butter-soft);
+}
+
+/* ---------- tipy ---------- */
+
+.tips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: clamp(64px, 9vw, 112px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tips li {
+  padding: 28px 26px;
+  border-radius: var(--radius);
+  background: var(--peach-soft);
+}
+.tips li:nth-child(2) {
+  background: var(--sky-soft);
+}
+.tips li:nth-child(3) {
+  background: var(--butter-soft);
+}
+.tips h3 {
+  font-size: 1.35rem;
+  margin-bottom: 10px;
+}
+.tips p {
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+}
+
+@media (max-width: 1000px) {
+  .convo__head {
+    grid-template-columns: 1fr;
+  }
+  .steps__card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .steps__quote {
+    grid-column: 1 / -1;
+  }
+  .phrases__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tips {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 680px) {
+  .steps__card {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    min-height: 0;
+    top: calc(var(--nav-h) + 12px + var(--i) * 8px);
+  }
+  .steps__num {
+    font-size: 2.8rem;
+  }
+  .phrases__head {
+    grid-template-columns: 1fr;
+  }
+  .phrases__grid {
+    grid-template-columns: 1fr;
+  }
+  .phrase__face {
+    min-height: 170px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .steps__card {
+    position: relative;
+    top: auto;
+  }
+}

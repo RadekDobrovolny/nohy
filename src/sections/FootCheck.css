@@ -1,0 +1,392 @@
+.check__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+/* ---------- mapa nohy ---------- */
+
+.check__map {
+  position: relative;
+  padding: 24px 24px 32px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.check__toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(100%, 300px);
+  margin: 0 auto 8px;
+  padding: 4px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--bg);
+}
+.check__toggle button {
+  position: relative;
+  z-index: 1;
+  min-height: 44px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 800;
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: color 0.3s;
+}
+.check__toggle button[aria-pressed='true'] {
+  color: var(--paper);
+}
+.check__toggle-pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: var(--ink);
+  transition: transform 0.45s var(--ease-soft);
+}
+.check__toggle-pill.is-right {
+  transform: translateX(100%);
+}
+
+.check__stage {
+  perspective: 1200px;
+}
+.check__foot {
+  position: relative;
+  width: min(100%, 360px);
+  margin: 0 auto;
+  transform-style: preserve-3d;
+}
+.check__foot svg {
+  width: 100%;
+  height: auto;
+}
+
+.check__spot {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  display: grid;
+  place-items: center;
+  border: 2.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 900;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition:
+    background 0.25s,
+    color 0.25s,
+    box-shadow 0.25s;
+}
+.check__spot::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid var(--coral);
+  opacity: 0;
+  animation: spot-pulse 2.4s ease-out infinite;
+}
+.check__spot:hover {
+  background: var(--butter);
+}
+.check__spot.is-active {
+  background: var(--coral-deep);
+  color: var(--paper);
+}
+.check__spot.is-active::before {
+  border-color: var(--coral-deep);
+}
+@keyframes spot-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  80%,
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* ---------- panel s vysvětlením ---------- */
+
+.check__side {
+  display: grid;
+  gap: 24px;
+}
+
+.check__panel {
+  padding: 30px 30px 24px;
+  border-radius: var(--radius);
+  background: var(--paper);
+  border: 2px solid var(--ink);
+}
+.check__panel-kicker {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
+.check__panel h3 {
+  margin: 6px 0 18px;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+}
+.check__panel-row {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.check__badge {
+  justify-self: start;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+.check__badge--look {
+  background: var(--butter-soft);
+  color: #7a5a00;
+}
+.check__badge--tip {
+  background: var(--sage-soft);
+  color: var(--sage-deep);
+}
+
+.check__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 18px;
+  border-top: 1.5px dashed var(--line);
+}
+.check__chips button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px 0 6px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+.check__chips button span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  font-weight: 900;
+  font-size: 0.82rem;
+}
+.check__chips button.is-active {
+  border-color: var(--ink);
+  background: var(--butter-soft);
+}
+
+/* ---------- kontrolní seznam ---------- */
+
+.check__list {
+  padding: 28px 30px;
+  border-radius: var(--radius);
+  background: var(--sage-deep);
+  color: var(--paper);
+}
+.check__list-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.check__list h3 {
+  font-size: 1.35rem;
+}
+.check__list-head p {
+  font-weight: 800;
+  color: var(--butter);
+  white-space: nowrap;
+}
+.check__progress {
+  height: 8px;
+  margin: 16px 0 14px;
+  border-radius: 8px;
+  background: rgba(255, 252, 247, 0.18);
+  overflow: hidden;
+}
+.check__progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--butter);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.check__list ul {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.check__list label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 48px;
+  padding: 6px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.check__list label:hover {
+  background: rgba(255, 252, 247, 0.08);
+}
+.check__list input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.check__box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--paper);
+  border-radius: 9px;
+  transition:
+    background 0.25s,
+    border-color 0.25s;
+}
+.check__box svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  transition: stroke-dashoffset 0.35s var(--ease-soft);
+}
+.check__list input:checked + .check__box {
+  background: var(--butter);
+  border-color: var(--butter);
+}
+.check__list input:checked + .check__box svg {
+  stroke-dashoffset: 0;
+}
+.check__list input:focus-visible + .check__box {
+  outline: 3px solid var(--butter);
+  outline-offset: 3px;
+}
+.check__list label.is-checked {
+  color: rgba(255, 252, 247, 0.7);
+}
+
+/* ---------- péče doma ---------- */
+
+.care {
+  margin-top: clamp(72px, 10vw, 128px);
+}
+.care__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 16px 40px;
+  margin-bottom: 36px;
+}
+.care__title {
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+}
+.care__head p {
+  color: var(--ink-soft);
+  max-width: 460px;
+}
+
+.care__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.care__grid li {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 22px 22px 24px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 252, 247, 0.75);
+  border: 1.5px solid rgba(46, 42, 59, 0.12);
+}
+.care__icon {
+  width: 76px;
+}
+.care__grid h4 {
+  font-size: 1.18rem;
+  margin: 4px 0 6px;
+}
+.care__grid p {
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 1000px) {
+  .check__grid {
+    grid-template-columns: 1fr;
+  }
+  .care__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 680px) {
+  .care__head {
+    grid-template-columns: 1fr;
+  }
+  .care__grid {
+    grid-template-columns: 1fr;
+  }
+  .check__map {
+    padding: 18px 14px 24px;
+  }
+  .check__panel,
+  .check__list {
+    padding: 24px 20px;
+  }
+  .check__list-head {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .check__spot::before {
+    display: none;
+  }
+}
