@@ -1,6 +1,7 @@
 import { Heading } from '../components/Heading';
 import { Reveal } from '../components/Reveal';
 import ScrollReveal from '../components/reactbits/ScrollReveal';
+import { finePointer } from '../lib/motion';
 import { IconBend, IconDrop, IconGlasses, IconShy } from '../illustrations/Icons';
 import './Why.css';
 
@@ -85,7 +86,7 @@ export function Statement() {
         <ScrollReveal
           as="blockquote"
           baseOpacity={0.12}
-          enableBlur
+          enableBlur={finePointer}
           baseRotation={2}
           blurStrength={6}
           containerClassName="why__quote"

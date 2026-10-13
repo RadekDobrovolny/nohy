@@ -1,5 +1,5 @@
 import { useId, useRef } from 'react';
-import { gsap, useGSAP, reducedMotion } from '../lib/motion';
+import { gsap, useGSAP, reducedMotion, playWhileVisible } from '../lib/motion';
 import { HandFilter, Heart, inkStroke } from './kit';
 
 const SHADOW = 'rgba(46,42,59,0.14)';
@@ -38,21 +38,34 @@ export function TeaCups({ className }: { className?: string }) {
   useGSAP(
     () => {
       if (reducedMotion) return;
-      gsap.fromTo(
-        '.steam',
-        { strokeDashoffset: 0 },
-        { strokeDashoffset: -40, duration: 2.2, ease: 'none', repeat: -1 },
-      );
-      gsap.to('.steam', { opacity: 0.45, duration: 1.6, ease: 'sine.inOut', repeat: -1, yoyo: true, stagger: 0.4 });
-      gsap.to('.tea-heart', {
-        y: -8,
-        scale: 1.08,
-        transformOrigin: '50% 50%',
-        duration: 1.6,
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-      });
+      // Pára a srdce jsou mimo SVG filtr a běží jen když jsou šálky vidět.
+      const loops = [
+        gsap.fromTo(
+          '.steam',
+          { strokeDashoffset: 0 },
+          { strokeDashoffset: -40, duration: 2.2, ease: 'none', repeat: -1, paused: true },
+        ),
+        gsap.to('.steam', {
+          opacity: 0.45,
+          duration: 1.6,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          stagger: 0.4,
+          paused: true,
+        }),
+        gsap.to('.tea-heart', {
+          y: -8,
+          scale: 1.08,
+          transformOrigin: '50% 50%',
+          duration: 1.6,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          paused: true,
+        }),
+      ];
+      playWhileVisible(root.current, loops);
       gsap.from('.bubble-l, .bubble-r', {
         scale: 0,
         transformOrigin: '50% 100%',
@@ -82,16 +95,6 @@ export function TeaCups({ className }: { className?: string }) {
           fill="var(--peach)"
           opacity={0.55}
         />
-
-        <g fill="none" stroke="var(--ink)" strokeWidth={3} strokeLinecap="round" strokeDasharray="10 10" opacity={0.75}>
-          <path className="steam" d="M118 132 C 104 112 132 100 120 80 C 112 66 130 54 150 58" />
-          <path className="steam" d="M140 130 C 134 112 152 104 146 88 C 142 76 160 68 176 72" />
-          <path className="steam" d="M322 132 C 336 112 308 100 320 80 C 328 66 310 54 290 58" />
-          <path className="steam" d="M300 130 C 306 112 288 104 294 88 C 298 76 280 68 264 72" />
-        </g>
-        <g className="tea-heart">
-          <Heart x={220} y={66} s={2.1} />
-        </g>
 
         <Cup x={130} color="var(--sky)" handle="left" />
         <Cup x={310} color="var(--butter)" handle="right" />
@@ -124,6 +127,17 @@ export function TeaCups({ className }: { className?: string }) {
           />
           <Heart x={370} y={32} s={0.8} />
         </g>
+      </g>
+
+      {/* animovaná pára a srdce: mimo filtr */}
+      <g fill="none" stroke="var(--ink)" strokeWidth={3} strokeLinecap="round" strokeDasharray="10 10" opacity={0.75}>
+        <path className="steam" d="M118 132 C 104 112 132 100 120 80 C 112 66 130 54 150 58" />
+        <path className="steam" d="M140 130 C 134 112 152 104 146 88 C 142 76 160 68 176 72" />
+        <path className="steam" d="M322 132 C 336 112 308 100 320 80 C 328 66 310 54 290 58" />
+        <path className="steam" d="M300 130 C 306 112 288 104 294 88 C 298 76 280 68 264 72" />
+      </g>
+      <g className="tea-heart">
+        <Heart x={220} y={66} s={2.1} />
       </g>
     </svg>
   );

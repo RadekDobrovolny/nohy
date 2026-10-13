@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactElement } from 'react';
+import type { CSSProperties, ReactElement, ReactNode } from 'react';
 import { Heading } from '../components/Heading';
 import { Reveal } from '../components/Reveal';
 import SpotlightCard from '../components/reactbits/SpotlightCard';
@@ -10,6 +10,7 @@ import {
   IconPodiatry,
   IconStethoscope,
 } from '../illustrations/Icons';
+import { finePointer } from '../lib/motion';
 import './Help.css';
 
 type HelpItem = {
@@ -79,6 +80,24 @@ const URGENT = [
   'Náhlá silná bolest, nebo naopak nově vzniklá necitlivost.',
 ];
 
+/** Světlo za kurzorem (React Bits SpotlightCard) jen na zařízeních s myší; na dotyku není vidět a jen by poslouchalo scroll. */
+function HelpCard({ children }: { children: ReactNode }) {
+  if (!finePointer) return <div className="help__card help__card--plain">{children}</div>;
+  return (
+    <SpotlightCard
+      className="help__card"
+      theme="light"
+      spotlightColor="#e2704f"
+      intensity={0.35}
+      spotlightSize={280}
+      borderGlow={0.9}
+      style={{ '--spotlight-card-surface': 'var(--paper)' } as CSSProperties}
+    >
+      {children}
+    </SpotlightCard>
+  );
+}
+
 export function Help() {
   return (
     <section className="section section--sky help" id="pomoc" tabIndex={-1} aria-labelledby="pomoc-title">
@@ -99,19 +118,7 @@ export function Help() {
         <Reveal as="ul" className="help__grid" stagger={0.08}>
           {HELP.map(({ Icon, tag, title, text, link }) => (
             <li key={title}>
-              <SpotlightCard
-                className="help__card"
-                theme="light"
-                spotlightColor="#e2704f"
-                intensity={0.35}
-                spotlightSize={280}
-                borderGlow={0.9}
-                style={
-                  {
-                    '--spotlight-card-surface': 'var(--paper)',
-                  } as CSSProperties
-                }
-              >
+              <HelpCard>
                 <div className="help__top">
                   <Icon className="help__icon" />
                   <span className="help__tag">{tag}</span>
@@ -124,7 +131,7 @@ export function Help() {
                     <span className="sr-only"> (otevře se v novém okně)</span>
                   </a>
                 )}
-              </SpotlightCard>
+              </HelpCard>
             </li>
           ))}
         </Reveal>

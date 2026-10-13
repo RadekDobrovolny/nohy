@@ -1,5 +1,5 @@
 import { useId, useRef } from 'react';
-import { gsap, useGSAP, reducedMotion } from '../lib/motion';
+import { gsap, useGSAP, reducedMotion, playWhileVisible } from '../lib/motion';
 import { HandFilter, Heart, Sparkle, inkStroke } from './kit';
 
 const BLOB =
@@ -74,52 +74,61 @@ export function HeroScene({ className }: { className?: string }) {
         )
         .from('.deco', { scale: 0, opacity: 0, duration: 0.5, stagger: 0.06, transformOrigin: '50% 50%' }, '-=0.4');
 
+      // Prsty se zavrtí jen chvíli po úvodu: jsou pod SVG filtrem a každý pohyb ho nutí přepočítat.
       gsap.to('.toes', {
         rotate: 5,
         transformOrigin: '50% 0%',
         duration: 0.5,
         ease: 'sine.inOut',
-        repeat: -1,
+        delay: 1.8,
+        repeat: 5,
         yoyo: true,
         repeatDelay: 0.6,
         stagger: 0.25,
       });
-      gsap.to('.legs-bob', { y: 4, duration: 2.4, ease: 'sine.inOut', repeat: -1, yoyo: true });
-      gsap.to('.bubble', {
-        y: () => gsap.utils.random(-22, -6),
-        scale: () => gsap.utils.random(0.75, 1.2),
-        transformOrigin: '50% 50%',
-        duration: () => gsap.utils.random(1.6, 2.8),
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-        stagger: { each: 0.15, from: 'random' },
-      });
-      gsap.fromTo(
-        '.ripple',
-        { scale: 0.85, opacity: 0.9, transformOrigin: '50% 50%' },
-        { scale: 1.5, opacity: 0, duration: 2.6, ease: 'sine.out', repeat: -1, stagger: 0.65 },
-      );
-      gsap.to('.float', {
-        y: -10,
-        rotate: 6,
-        transformOrigin: '50% 50%',
-        duration: 2.2,
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.5,
-      });
-      gsap.to('.twinkle', {
-        scale: 0.6,
-        rotate: 45,
-        transformOrigin: '50% 50%',
-        duration: 1.4,
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.4,
-      });
+
+      // Smyčky mimo filtr; běží jen když je ilustrace vidět.
+      const loops = [
+        gsap.to('.bubble', {
+          y: () => gsap.utils.random(-22, -6),
+          scale: () => gsap.utils.random(0.75, 1.2),
+          transformOrigin: '50% 50%',
+          duration: () => gsap.utils.random(1.6, 2.8),
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          stagger: { each: 0.15, from: 'random' },
+          paused: true,
+        }),
+        gsap.fromTo(
+          '.ripple',
+          { scale: 0.85, opacity: 0.9, transformOrigin: '50% 50%' },
+          { scale: 1.5, opacity: 0, duration: 2.6, ease: 'sine.out', repeat: -1, stagger: 0.65, paused: true },
+        ),
+        gsap.to('.float', {
+          y: -10,
+          rotate: 6,
+          transformOrigin: '50% 50%',
+          duration: 2.2,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          stagger: 0.5,
+          paused: true,
+        }),
+        gsap.to('.twinkle', {
+          scale: 0.6,
+          rotate: 45,
+          transformOrigin: '50% 50%',
+          duration: 1.4,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          stagger: 0.4,
+          paused: true,
+        }),
+      ];
+      playWhileVisible(root.current, loops);
     },
     { scope: root },
   );
@@ -163,34 +172,43 @@ export function HeroScene({ className }: { className?: string }) {
 
         {/* nohy */}
         <g clipPath={`url(#${clip})`}>
-          <g className="legs-bob">
-            <g className="legs">
-              <g transform="translate(-12 0)">
-                <Foot />
-              </g>
-              <g transform="translate(600 0) scale(-1 1) translate(-12 0)">
-                <Foot />
-              </g>
-              {/* voda přes chodidla */}
-              <circle cx="300" cy="330" r="158" fill="var(--sky)" opacity={0.2} pointerEvents="none" />
-              <path d="M196 448 q 18 -8 36 0 t 36 0" className="stroke" stroke="#fff" strokeWidth={3} opacity={0.75} />
-              <path d="M340 462 q 14 -6 28 0 t 28 0" className="stroke" stroke="#fff" strokeWidth={3} opacity={0.75} />
-              <path d="M392 278 q 12 -6 24 0" className="stroke" stroke="#fff" strokeWidth={3} opacity={0.75} />
-              <g transform="translate(-12 0)">
-                <Leg />
-              </g>
-              <g transform="translate(600 0) scale(-1 1) translate(-12 0)">
-                <Leg />
-              </g>
-              <ellipse className="ripple" cx="232" cy="250" rx="36" ry="10" fill="none" stroke="#fff" strokeWidth={3} />
-              <ellipse className="ripple" cx="368" cy="250" rx="36" ry="10" fill="none" stroke="#fff" strokeWidth={3} />
-              <ellipse className="ripple" cx="232" cy="250" rx="36" ry="10" fill="none" stroke="#fff" strokeWidth={3} />
-              <ellipse className="ripple" cx="368" cy="250" rx="36" ry="10" fill="none" stroke="#fff" strokeWidth={3} />
+          <g className="legs">
+            <g transform="translate(-12 0)">
+              <Foot />
+            </g>
+            <g transform="translate(600 0) scale(-1 1) translate(-12 0)">
+              <Foot />
+            </g>
+            {/* voda přes chodidla */}
+            <circle cx="300" cy="330" r="158" fill="var(--sky)" opacity={0.2} pointerEvents="none" />
+            <path d="M196 448 q 18 -8 36 0 t 36 0" className="stroke" stroke="#fff" strokeWidth={3} opacity={0.75} />
+            <path d="M340 462 q 14 -6 28 0 t 28 0" className="stroke" stroke="#fff" strokeWidth={3} opacity={0.75} />
+            <path d="M392 278 q 12 -6 24 0" className="stroke" stroke="#fff" strokeWidth={3} opacity={0.75} />
+            <g transform="translate(-12 0)">
+              <Leg />
+            </g>
+            <g transform="translate(600 0) scale(-1 1) translate(-12 0)">
+              <Leg />
             </g>
           </g>
         </g>
+      </g>
 
-        {/* bublinky */}
+      {/* animované detaily: mimo filtr, aby se nepřepočítával v každém snímku */}
+      <g>
+        {[232, 368, 232, 368].map((cx, i) => (
+          <ellipse
+            key={i}
+            className="ripple"
+            cx={cx}
+            cy="250"
+            rx="36"
+            ry="10"
+            fill="none"
+            stroke="#fff"
+            strokeWidth={3}
+          />
+        ))}
         <g fill="#fff" stroke="var(--sky-deep)" strokeWidth={2} opacity={0.95}>
           {[
             [186, 300, 8],
@@ -207,7 +225,9 @@ export function HeroScene({ className }: { className?: string }) {
             <circle key={i} className="bubble" cx={cx} cy={cy} r={r} />
           ))}
         </g>
+      </g>
 
+      <g filter={`url(#${hand})`}>
         {/* ručník */}
         <g className="prop" transform="translate(40 470) rotate(-12)">
           <rect x="6" y="6" width="176" height="84" rx="16" fill="rgba(46,42,59,0.14)" />
@@ -282,7 +302,9 @@ export function HeroScene({ className }: { className?: string }) {
             />
           ))}
         </g>
+      </g>
 
+      <g>
         <g className="deco">
           <g className="float">
             <Heart x={476} y={232} s={1.2} />

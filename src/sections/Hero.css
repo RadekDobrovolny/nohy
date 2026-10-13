@@ -46,7 +46,10 @@
 }
 .hero__rotator-split {
   overflow: hidden;
-  padding-bottom: 0.08em;
+  /* kurzíva přečnívá za okraj posledního písmene (u „i“ až o 0,1 em);
+     odsazení ji nechá dokreslit, záporný okraj zachová šířku štítku */
+  padding: 0 0.2em 0.08em;
+  margin: 0 -0.2em;
 }
 
 .hero__lead {
@@ -92,6 +95,8 @@
 
 .hero__art {
   position: relative;
+  /* vlastní vrstva: parallax při scrollu jen posouvá hotový obrázek */
+  will-change: transform;
   width: 100%;
   max-width: 620px;
   justify-self: center;

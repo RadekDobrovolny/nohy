@@ -133,10 +133,9 @@ export function Conversation() {
         if (!next) return;
         gsap.fromTo(
           card,
-          { scale: 1, filter: 'brightness(1)' },
+          { scale: 1 },
           {
             scale: 0.92 + i * 0.01,
-            filter: 'brightness(0.93)',
             ease: 'none',
             scrollTrigger: {
               trigger: next,

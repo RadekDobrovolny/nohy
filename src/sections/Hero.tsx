@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import RotatingText from '../components/reactbits/RotatingText';
 import { useScrollTo } from '../components/SmoothScroll';
 import { HeroScene } from '../illustrations/HeroScene';
-import { gsap, useGSAP, reducedMotion } from '../lib/motion';
+import { gsap, useGSAP, reducedMotion, playWhileVisible } from '../lib/motion';
 import './Hero.css';
 
 const WHO = ['rodičům', 'mámě', 'tátovi', 'babičce', 'dědovi'];
@@ -33,12 +33,15 @@ export function Hero() {
         scrollTrigger: { trigger: ref.current, start: 'top top', end: 'bottom top', scrub: true },
       });
 
-      gsap.to('.hero__steps path', {
-        opacity: 1,
-        duration: 0.35,
-        stagger: { each: 0.35, repeat: -1, yoyo: true },
-        ease: 'sine.inOut',
-      });
+      playWhileVisible(ref.current, [
+        gsap.to('.hero__steps path', {
+          opacity: 1,
+          duration: 0.35,
+          stagger: { each: 0.35, repeat: -1, yoyo: true },
+          ease: 'sine.inOut',
+          paused: true,
+        }),
+      ]);
     },
     { scope: ref },
   );
